@@ -1,6 +1,8 @@
 const L1 = document.getElementById("londonInfo");
 const M1 = document.getElementById("moscowInfo");
 const B1 = document.getElementById("bostonInfo");
+const C1 = document.getElementById("newCity");
+
 
 const options = {
   method: "GET",
@@ -29,7 +31,7 @@ const getWeather = (city) => {
       let hum = response.humidity;
       let temp = response.temp;
 
-      L1.innerHTML = `<div class="card-body" id="MoscowInfo">
+      L1.innerHTML = `<div class="card-body" id="londonInfo">
           <ul class="list-unstyled mt-3 mb-4">
             <li>Max Temp : ${Max} <span id="Max"></span></li>
             <li>Min Temp : ${Min} <span id="Min"></span></li>
@@ -58,6 +60,8 @@ fetch(
     let Min = response.min_temp;
     let hum = response.humidity;
     let temp = response.temp;
+
+    C1.innerHTML = city;
 
     L1.innerHTML = `<div class="card-body" id="londonInfo">
         <ul class="list-unstyled mt-3 mb-4">

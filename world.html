@@ -26,13 +26,21 @@
       </button>
     </form>
 
-    <h1 class="my-4 text-center">Weather of London<span id="cityName"> </span></h1>
+    <p class="control">
+      <a class="button is-primary" href="/index.html">
+        <span class="icon">
+          <i class="fas fa-download"></i>
+        </span>
+        <span>Home</span>
+      </a>
+    </p>
+
 
     <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
       <div class="col">
         <div class="card mb-4 rounded-3 shadow-sm">
           <div class="card-header py-3">
-            <h4 class="my-0 fw-normal">London, UK</h4>
+            <h4 class="my-0 fw-normal" id="newCity">London, UK</h4>
           </div>
           <div class="card-body" id="londonInfo">
             <ul class="list-unstyled mt-3 mb-4">
@@ -59,7 +67,7 @@
               <li>Humidity : 60%<span id="hum"></span></li>
               <li>Temp Now : 40&#176C<span id="temp"></span></li>
             </ul>
-            <button type="button" href= "https://en.wikipedia.org/wiki/Moscow#:~:text=The%20northernmost%20and%20coldest%20megacity,the%20world's%20largest%20urban%20economies." class="w-100 btn btn-lg btn-primary">
+            <button type="button" href="https://www.youtube.com/watch?v=SfZWFDs0LxA&ab_channel=UniversalPicturesUK">
               More Info
             </button>
           </div>
@@ -77,7 +85,7 @@
               <li>Humidity : %60<span id="hum"></span></li>
               <li>Temp Now : 40&#176C<span id="temp"></span></li>
             </ul>
-            <button type="button" href="https://en.wikipedia.org/wiki/Moscow#:~:text=The%20northernmost%20and%20coldest%20megacity,the%20world's%20largest%20urban%20economies." class="w-100 btn btn-lg btn-primary">
+            <button type="button"  class="w-100 btn btn-lg btn-primary" href="https://en.wikipedia.org/wiki/Moscow#:~:text=The%20northernmost%20and%20coldest%20megacity,the%20world's%20largest%20urban%20economies.">
               More Info
             </button>
           </div>
