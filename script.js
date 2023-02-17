@@ -13,6 +13,15 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 const API_KEY = '7d82e82bdffd132640b4c8fb1859b864';
 
+console.log("Here");
+
+fetch(`api.openweathermap.org/data/2.5/forecast/daily?lat=44.34&lon=10.99&cnt=7&appid=${API_KEY}`).then(Response => Response.json()).then(data => {
+    console.log("Here");
+    console.log(data);
+    })
+
+fetch()
+
 setInterval(() => {
     const time = new Date();
     const month = time.getMonth();
@@ -29,11 +38,36 @@ setInterval(() => {
 
 }, 1000);
 
+
+
+futureTempData()
+function futureTempData () {
+    navigator.geolocation.getCurrentPosition((success) => {
+        console.log(success)
+        let {latitude,longitude} = success.coords;
+
+        function getCountry(){
+            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=28.4721152&lon=77.1293184&appid=7d82e82bdffd132640b4c8fb1859b864`)
+            .then((response) => response.json())
+            .then((newData) => {
+              console.log(newData.list[1].main.temp_min );
+              console.log(newData);
+            })
+          }
+        
+          getCountry();
+        console.log(newData);
+        showWeatherData(newData);
+        })
+}
+
 getWeatherData()
 function getWeatherData () {
     navigator.geolocation.getCurrentPosition((success) => {
         console.log(success)
         let {latitude,longitude} = success.coords;
+
+        
 
         fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`).then(Response => Response.json()).then(data => {
 
@@ -44,24 +78,12 @@ function getWeatherData () {
     })
 }
 
-futureTempData()
-function futureTempData () {
-    navigator.geolocation.getCurrentPosition((success) => {
-        console.log(success)
-        let {latitude,longitude} = success.coords;
 
-        fetch(`api.openweathermap.org/data/2.5/forecast/daily?lat=${latitude}&lon=${longitude}&cnt=${8}&unit=metric&appid=${API_KEY}`).then(Response => Response.json()).then(newdata => {
 
-        console.log(newdata)
-        showWeatherData(newdata);
-        })
-
-    })
-}
-
-function showWeatherData (data,newdata){
+function showWeatherData (data,newData){
     
-    let temp_now  = data.main.temp;
+    let temp_now  = Number(data.main.temp-273.15).toFixed(2);
+    console.log(newData)
     
 
     let Humidity = data.main.humidity;
@@ -91,36 +113,43 @@ function showWeatherData (data,newdata){
         <div>Temp Now</div>
        <div>${temp_now} &#8451</div>
     </div>
+    <div class="weather-item">
+        <div> Sunrise </div>
+        <div> ${window.moment(data.sys.sunrise * 1000).format('HH:mm a')} </div>
+    </div>
+        <div class="weather-item">
+            <div> Sunset </div>
+            <div> ${window.moment(data.sys.sunset * 1000).format('HH:mm a')} </div>
+        </div>
     
     
     `;
 
-    let otherDayForcast = ''
-    newdata.list.date.forEach((list, idx) => {
-        if(idx == 0){
-
-            currentTempEl.innerHTML = `
-            <img src="http://openweathermap.org/img/wn//${list.weather[0].icon}@4x.png" alt="weather icon" class="w-icon">
-            <div class="other">
-                <div class="list">${window.moment(list.dt*1000).format('dddd')}</div>
-                <div class="temp"> MAX - ${newdata.list.temp.eve}&#176;C</div>
-                <div class="temp"> MIN - ${newdata.temp.list}&#176;C</div>
-            </div>
-            
-            `
-        }else{
-            otherDayForcast += `
-            <div class="weather-forecast-item">
-                <div class="list">${window.moment(list.dt*1000).format('ddd')}</div>
-                <img src="http://openweathermap.org/img/wn/${list.weather[0].icon}@2x.png" alt="weather icon" class="w-icon">
-                <div class="temp"> MAX - ${list.temp.night}&#176;C</div>
-                <div class="temp" - ${list.temp.list}&#176;C</div>
-            </div>
-            
-            `
+    navigator.geolocation.getCurrentPosition((success) => {
+        console.log(success)
+        let {latitude,longitude} = success.coords;
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=7d82e82bdffd132640b4c8fb1859b864`)
+        .then(response => response.json())
+        .then(newData => {
+            document.getElementById("day" + (3)).innerHTML = window.moment((newData.list[2].dt*1500 )).format('dddd')
+            console.log("here");
+            console.log((newData.list[1].main.temp_min - 273.15).toFixed(2));
+            console.log(window.moment(((newData.list[0].dt*1000))));
+            const newDay = window.moment(((newData.list[0].dt*1000)))
+            document.getElementById("day" + (2)).innerHTML = window.moment((newData.list[1].dt*1000 )).format('dddd');
+            document.getElementById("day" + (4)).innerHTML = window.moment((newData.list[3].dt*2000 )).format('dddd');
+            document.getElementById("day" + (5)).innerHTML = window.moment((newData.list[4].dt*2500 )).format('dddd');
+            document.getElementById("day" + (6)).innerHTML = window.moment((newData.list[5].dt*3000 )).format('dddd');
+            for(i = 0; i<40; i++){
+                document.getElementById("day" + (i+1) + "Min").innerHTML = "Min: " + Number(newData.list[i].main.temp_min - 273.15).toFixed(2)+ "° C";
+                document.getElementById("day" + (i+1) + "Max").innerHTML = "Max: " + Number(newData.list[i].main.temp_max - 273.15).toFixed(2) + "° C" ;
+                document.getElementById("img" + (i+1)).src = "http://openweathermap.org/img/wn/"+newData.list[i].weather[0].icon+".png";
+                document.getElementById("day" + (1)).innerHTML = "Today";
         }
+        })
+        
     })
+}
 
 
     weatherForecastEl.innerHTML = otherDayForcast;
-}
